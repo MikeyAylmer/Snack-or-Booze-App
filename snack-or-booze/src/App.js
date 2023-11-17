@@ -11,6 +11,10 @@ import Snack from "./FoodItem";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [snacks, setSnacks] = useState([]);
+  const [drinks, setDrinks] = useState([
+    { id: 1, name: 'Soda', description: 'Fizz and refreshing' },
+    { id: 2, name: 'Coffee', description: 'Wake up with a cup' },
+  ]);
 
   useEffect(() => {
     async function getSnacks() {
@@ -20,6 +24,9 @@ function App() {
     }
     getSnacks();
   }, []);
+
+  const addDrink = (newDrink) => setDrinks([...drinks, newDrink]);
+
 
   if (isLoading) {
     return <p>Loading &hellip;</p>;
@@ -40,6 +47,18 @@ function App() {
             <Route path="/snacks/:id">
               <Snack items={snacks} cantFind="/snacks" />
             </Route>
+            <Route path="/drinks" exact render={() =>
+              <Menu items={drinks} itemType="Drink" />} />
+            <Route path="/drinks/:id" render={() =>
+              <MenuItem items={drinks} itemType="Drink" />} />
+            <Route
+              path="/add/snack"
+              render={() => <AddItemPage addItem={addSnack} itemType="Snack" />}
+            />
+            <Route
+              path="/add/drink"
+              render={() => <AddItemPage addItem={addDrink} itemType="Drink" />}
+            />
             <Route>
               <p>Hmmm. I can't seem to find what you want.</p>
             </Route>
